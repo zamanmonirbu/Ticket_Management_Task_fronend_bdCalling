@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .gradient-button {
+    @apply py-3 px-6 text-white font-semibold rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500;
+    background: linear-gradient(45deg, #000B18, #00020C); /* Your custom gradient */
+    transition: all 0.3s ease;
+  }
+
+  .gradient-button:hover {
+    background: linear-gradient(45deg, #00020C, #000B18); /* Reversed gradient on hover */
+  }
+  .gradient-button-main {
+    @apply py-3 px-6 text-white font-semibold rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500;
+    background: linear-gradient(45deg, #000B18, #00020C); /* Your custom gradient */
+    transition: all 0.3s ease;
+  }
+
+  .gradient-button-main:hover {
+    background: linear-gradient(45deg, #00020C, #000B18); /* Reversed gradient on hover */
+  }
+
+ 
+}
+
+@layer utilities {
+  .gradient-bg {
+    @apply bg-gradient-to-r from-[#000f38] to-[#00020C]; /* Apply the custom gradient as background */
+  }
+}
