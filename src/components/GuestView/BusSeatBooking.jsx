@@ -1,74 +1,87 @@
-import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { MdOutlineAirlineSeatReclineExtra } from 'react-icons/md';
 import { IoCheckmarkDoneCircleOutline } from 'react-icons/io5';
 import { motion } from 'framer-motion';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBookedSeats, removeSeatFromCart, addSeatToCart } from '../../redux/Actions/busSeatActions';
 
-const BusSeatBooking = ({busDetails}) => {
-  // Sample data of seats, 1 means booked, 0 means available
-  const initialSeats = [
-    [0, 0, 0, 0],  // A1, A2, A3, A4
-    [0, 1, 0, 0],  // B1, B2 (Booked), B3, B4
-    [0, 0, 0, 0],  // C1, C2, C3, C4
-    [0, 0, 0, 0],  // D1, D2, D3, D4
-    [0, 0, 0, 0],  // E1, E2, E3, E4
-    [1, 0, 0, 0],  // F1 (Booked), F2, F3, F4
-  ];
+const BusSeatBooking = ({ busDetails }) => {
+  const dispatch = useDispatch();
 
-  const [seats, setSeats] = useState(initialSeats);
+  // Access Redux state
+  const { bookedSeats, loading } = useSelector((state) => state.busSeats);
+  const { cart } = useSelector((state) => state.busCart);
 
-  const handleSeatClick = (rowIndex, colIndex) => {
-    // If the seat is already booked (1), do nothing
-    if (seats[rowIndex][colIndex] === 1) return;
+  // Fetch booked seats when component mounts
+  useEffect(() => {
+    dispatch(fetchBookedSeats(busDetails._id));
+  }, [dispatch, busDetails._id]);
 
-    // Toggle between available (0) and booked (1)
-    const updatedSeats = [...seats];
-    updatedSeats[rowIndex][colIndex] = updatedSeats[rowIndex][colIndex] === 0 ? 1 : 0;
-    setSeats(updatedSeats);
-  };
+  // Generate seats grid dynamically
+  const totalSeats = busDetails.totalSeats;
+  const seatsPerRow = 4; // Adjust as needed
+  const numRows = Math.ceil(totalSeats / seatsPerRow);
+  const seats = Array.from({ length: numRows }, (_, rowIndex) =>
+    Array.from({ length: seatsPerRow }, (_, colIndex) => {
+      const seatNumber = rowIndex * seatsPerRow + colIndex + 1;
+      return seatNumber <= totalSeats ? seatNumber : null;
+    })
+  );
 
-  // Generate seat labels (e.g., A1, A2, A3, A4)
-  const getSeatLabel = (rowIndex, colIndex) => {
-    const rowLabel = String.fromCharCode(65 + rowIndex); // 'A', 'B', 'C', etc.
-    const colLabel = colIndex + 1; // Column numbers 1, 2, 3, 4
-    return `${rowLabel}${colLabel}`;
+  // Handle seat click
+  const handleSeatClick = (seatNumber) => {
+    if (!seatNumber || bookedSeats.includes(seatNumber)) return;
+
+    const seatData = {
+      seatNumber,
+      money: 500, // Example price, you can adjust it dynamically
+      busId: busDetails._id,
+    };
+
+    if (cart.some(seat => seat.seatNumber === seatNumber)) {
+      dispatch(removeSeatFromCart(seatNumber)); // Remove from cart if already in
+    } else {
+      dispatch(addSeatToCart(seatData)); // Add seat object to cart
+    }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen gradient-bg">
+    <div className="flex justify-center items-center min-h-screen">
       <div className="w-full max-w-2xl p-8 bg-white shadow-lg rounded-lg">
-        {/* <h1 className="text-3xl font-semibold text-center text-blue-600 mb-6">Bus Seat Booking</h1> */}
-        <h3 className="font-semibold text-xl mb-4">Book a Seat on {busDetails?.busName}</h3>
+        <h3 className="font-semibold text-xl mb-4">Book a Seat on {busDetails?.name}</h3>
 
-        {/* Displaying seats in a grid */}
+        {loading && <p>Loading seats...</p>}
+
         <div className="space-y-6">
           {seats.map((row, rowIndex) => (
             <div key={rowIndex} className="grid grid-cols-4 gap-4">
-              {/* For each row, display 4 seats */}
-              {row.map((seat, colIndex) => (
+              {row.map((seatNumber, colIndex) => (
                 <div key={`${rowIndex}-${colIndex}`} className="flex flex-col items-center">
-                  {/* Seat button with icon */}
-                  <motion.button
-                    onClick={() => handleSeatClick(rowIndex, colIndex)}
-                    className={`w-12 h-12 rounded-lg flex items-center justify-center focus:outline-none transition-all ${
-                      seat === 1
-                        ? 'bg-red-500 cursor-not-allowed'
-                        : 'bg-green-500 hover:bg-green-600'
-                    }`}
-                    disabled={seat === 1}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {/* If the seat is booked, show the cross icon */}
-                    {seat === 1 ? (
-                      <IoCheckmarkDoneCircleOutline className="text-white" />
-                    ) : (
-                      <MdOutlineAirlineSeatReclineExtra className="text-white" />
-                    )}
-                  </motion.button>
-                  {/* Seat Label */}
-                  <span className="text-sm mt-1 text-gray-700">
-                    {getSeatLabel(rowIndex, colIndex)} {/* Adjust for the correct index */}
-                  </span>
+                  {seatNumber && (
+                    <motion.button
+                      onClick={() => handleSeatClick(seatNumber)}
+                      className={`w-12 h-12 rounded-lg flex items-center justify-center focus:outline-none transition-all ${
+                        bookedSeats.includes(seatNumber)
+                          ? 'bg-red-500 cursor-not-allowed'
+                          : cart.some(seat => seat.seatNumber === seatNumber)
+                          ? 'bg-yellow-500 hover:bg-yellow-600'
+                          : 'bg-green-500 hover:bg-green-600'
+                      }`}
+                      disabled={bookedSeats.includes(seatNumber)}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {bookedSeats.includes(seatNumber) ? (
+                        <IoCheckmarkDoneCircleOutline className="text-white" />
+                      ) : (
+                        <MdOutlineAirlineSeatReclineExtra className="text-white" />
+                      )}
+                    </motion.button>
+                  )}
+                  {seatNumber && (
+                    <span className="text-sm mt-1 text-gray-700">{seatNumber}</span>
+                  )}
                 </div>
               ))}
             </div>
@@ -77,6 +90,22 @@ const BusSeatBooking = ({busDetails}) => {
       </div>
     </div>
   );
+};
+
+BusSeatBooking.propTypes = {
+  busDetails: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    totalSeats: PropTypes.number.isRequired,
+    schedules: PropTypes.arrayOf(
+      PropTypes.shape({
+        from: PropTypes.string.isRequired,
+        to: PropTypes.string.isRequired,
+        departureTime: PropTypes.string.isRequired,
+        arrivalTime: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
 };
 
 export default BusSeatBooking;

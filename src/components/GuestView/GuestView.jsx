@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 
 const GuestView = () => {
     return (
-        <div className="gradient-bg">
+        <div className="gradient-bg min-h-screen">
             <Navbar/>
             <BusSearchBar/>
         </div>

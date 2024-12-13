@@ -7,4 +7,18 @@ const axiosInstance = axios.create({
   },
 });
 
+// Add a request interceptor to include the authToken in each request
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const authToken = localStorage.getItem('authToken'); // Retrieve token from local storage
+    if (authToken) {
+      config.headers['Authorization'] = `Bearer ${authToken}`; // Attach token to the request
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error); // Handle error
+  }
+);
+
 export default axiosInstance;

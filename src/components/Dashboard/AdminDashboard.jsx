@@ -1,5 +1,6 @@
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
+import { Outlet } from 'react-router-dom';
 
 const AdminDashboard = () => {
   return (
@@ -7,10 +8,7 @@ const AdminDashboard = () => {
       <Sidebar role="admin" />
       <div className="flex-1">
         <Navbar />
-        <div className="p-8">
-          <h2 className="text-3xl">Admin Dashboard</h2>
-          <p>Welcome, Admin! Here you can manage users and perform admin tasks.</p>
-        </div>
+        <Outlet/>
       </div>
     </div>
   );

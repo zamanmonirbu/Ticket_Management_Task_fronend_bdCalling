@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { login } from "../../redux/Actions/AuthActions";
@@ -21,10 +21,12 @@ const Login = () => {
     dispatch(login(email, password));
   };
 
-  // Display error toast if there's an error
-  if (error) {
-    toast.error(error);
-  }
+  // ✅ Show error toast after render (only when `error` changes)
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]); // Runs whenever `error` changes
 
   return (
     <div className="flex justify-center items-center min-h-screen gradient-bg">
