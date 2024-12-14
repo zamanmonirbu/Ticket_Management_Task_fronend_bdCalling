@@ -1,24 +1,23 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://ticket-management-task-backend-bdcalling.onrender.com', // Replace with your server's URL
+  baseURL: 'https://ticket-management-task-backend-bdcalling.onrender.com',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Add a request interceptor to include the authToken in each request
 axiosInstance.interceptors.request.use(
   (config) => {
-    const authToken = localStorage.getItem('authToken'); // Retrieve token from local storage
+    const authToken = localStorage.getItem('authToken');
     if (authToken) {
-      config.headers['Authorization'] = `Bearer ${authToken}`; // Attach token to the request
+      config.headers['Authorization'] = `Bearer ${authToken}`;
+    } else {
+      console.warn('No auth token found');
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error); // Handle error
-  }
+  (error) => Promise.reject(error)
 );
 
 export default axiosInstance;
