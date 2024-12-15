@@ -9,8 +9,6 @@ const UserTickets = () => {
 
   // Get tickets from the Redux store
   const { ticket } = useSelector((state) => state.ticket);
-
-  console.log('Ticket data:', ticket);
   
   // Fetch tickets when the component mounts
   useEffect(() => {

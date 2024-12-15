@@ -14,9 +14,6 @@ const DashboardUser = () => {
       }
     }, [dispatch, user?.id]);
 
-    console.log('User:', user);
-    console.log('Tickets:', ticket);
-
     return (
       <div className="bg-gray-100 min-h-screen p-6">
         <header className="bg-white shadow-md p-4 flex justify-between items-center">
@@ -64,35 +61,16 @@ const DashboardUser = () => {
             </div>
           </section>
 
-          {/* My Tickets */}
-          {/* <section className="bg-white p-6 rounded-lg shadow-lg mb-8">
-            <h2 className="text-xl font-semibold mb-4">My Tickets</h2>
-            {ticket?.length > 0 ? (
-              <ul className="space-y-4">
-                {ticket.map((t, index) => (
-                  <li key={index} className="border-b pb-4">
-                    <p><strong>Bus Name:</strong> {t.busName}</p>
-                    <p><strong>Seat Number:</strong> {t.seatNumber}</p>
-                    <p><strong>Departure:</strong> {t.departure}</p>
-                    <p><strong>Status:</strong> {t.status}</p>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-center text-gray-500">No tickets available.</p>
-            )}
-          </section> */}
-
           <div className="bg-white shadow-lg rounded-lg p-6">
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">Bus Details</h3>
-            <p className="text-gray-700 mb-2"><span className="font-bold">Bus Name:</span> {ticket.busId?.name}</p>
-            <p className="text-gray-700 mb-2"><span className="font-bold">Total Seats:</span> {ticket.busId?.totalSeats}</p>
+            <p className="text-gray-700 mb-2"><span className="font-bold">Bus Name:</span> {ticket?.busId?.name}</p>
+            <p className="text-gray-700 mb-2"><span className="font-bold">Total Seats:</span> {ticket?.busId?.totalSeats}</p>
             <h4 className="text-xl font-semibold text-gray-700 mt-4 mb-2">Schedules</h4>
             <ul className="space-y-4">
-              {ticket.busId?.schedules.map((schedule) => (
-                <li key={schedule._id} className="bg-gray-100 p-4 rounded-md">
-                  <p className="text-gray-800"><span className="font-bold">From:</span> {schedule.from} <span className="font-bold">To:</span> {schedule.to}</p>
-                  <p className="text-gray-800"><span className="font-bold">Departure:</span> {schedule.departureTime} <span className="font-bold">Arrival:</span> {schedule.arrivalTime}</p>
+              {ticket?.busId?.schedules?.map((schedule) => (
+                <li key={schedule?._id} className="bg-gray-100 p-4 rounded-md">
+                  <p className="text-gray-800"><span className="font-bold">From:</span> {schedule?.from} <span className="font-bold">To:</span> {schedule?.to}</p>
+                  <p className="text-gray-800"><span className="font-bold">Departure:</span> {schedule?.departureTime} <span className="font-bold">Arrival:</span> {schedule?.arrivalTime}</p>
                 </li>
               ))}
             </ul>
