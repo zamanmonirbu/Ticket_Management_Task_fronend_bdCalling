@@ -156,9 +156,9 @@ const ManageUserViaAdmin = () => {
         </div>
       </form>
 
-      { users?.length>0&& (
+      {/* { users?.length>0&& ( */}
         <ul className="space-y-2 mt-4">
-          {users.map((user) => (
+          {users?.map((user) => (
             <li key={user?._id} className="p-4 border border-gray-200 rounded-md flex justify-between items-center">
               <div>
                 <div className="font-semibold">{user?.name}</div>
@@ -187,7 +187,7 @@ const ManageUserViaAdmin = () => {
             </li>
           ))}
         </ul>
-      )}
+      {/* )} */}
     </div>
   );
 };
