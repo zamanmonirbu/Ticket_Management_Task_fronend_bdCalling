@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types';
+
 const DateTimeSelection = ({ time, setTime }) => (
-  <div className="flex space-x-4 items-center py-8 ">
+  <div className="flex space-x-4 items-center py-8">
     <div className="flex-1 w-full">
       <input
         type="time"
@@ -10,5 +12,10 @@ const DateTimeSelection = ({ time, setTime }) => (
     </div>
   </div>
 );
+
+DateTimeSelection.propTypes = {
+  time: PropTypes.string.isRequired, // Must be a string
+  setTime: PropTypes.func.isRequired, // Must be a function
+};
 
 export default DateTimeSelection;

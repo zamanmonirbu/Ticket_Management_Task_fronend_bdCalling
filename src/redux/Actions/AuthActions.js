@@ -23,7 +23,16 @@ export const login = (email, password) => {
         console.log(user);
         localStorage.setItem('authToken', response.data.accessToken);
         dispatch(loginSuccess(user));
-        window.location.href = '/dashboard'; // Redirect after successful login
+        if(user.role==='admin'){
+          window.location.href = '/admin/dashboard'; // Redirect after successful login
+        }
+        else if(user.role==='user'){
+          window.location.href = '/user/dashboard'; // Redirect after successful login
+        }
+        else{
+          window.location.href = '/'; // Redirect after successful login
+        }
+        
       })
       .catch((error) => {
         dispatch(loginFailure(error.response?.data.message || 'Login failed'));
@@ -31,19 +40,26 @@ export const login = (email, password) => {
   };
 };
 
-export const register = (name, email, password) => {
+export const register = (name, email, password,address, mobile,role) => {
   return (dispatch) => {
     dispatch(registerRequest());
     axiosInstance
-      .post('/auth/register', { name, email, password })
+      .post('/auth/register', { name, email, password,address, mobile,role })
       .then((response) => {
         const user = response.data.user;
         dispatch(registerSuccess(user));
+        if(user.role=="admin"){
+          window.location.href = '/admin/manage-users';
+        }
         window.location.href = '/login'; // Redirect to login page after registration
       })
       .catch((error) => {
-        dispatch(registerFailure(error.response?.data.message || 'Registration failed'));
+        console.log(error)
+        const errorMessage =
+          error.response?.data.message || error.message || 'Registration failed';
+        dispatch(registerFailure(errorMessage));
       });
+      
   };
 };
 

@@ -54,8 +54,8 @@ const AddBus = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen gradient-bg">
-      <div className="w-full min-w-xl bg-white p-8 rounded-lg shadow-md">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="max-w-4xl min-w-xl bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Add Bus</h2>
         
         <form onSubmit={handleSubmit} className="space-y-6">

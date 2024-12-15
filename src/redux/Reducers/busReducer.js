@@ -1,13 +1,25 @@
-import { GET_BUS_ERROR, ADD_BUS, UPDATE_BUS, DELETE_BUS, SEARCH_BUSES_REQUEST, SEARCH_BUSES_SUCCESS, SEARCH_BUSES_FAILURE } from "../Types/Types";
+import { 
+  GET_BUS_ERROR, 
+  ADD_BUS, 
+  UPDATE_BUS, 
+  DELETE_BUS, 
+  SEARCH_BUSES_REQUEST, 
+  SEARCH_BUSES_SUCCESS, 
+  SEARCH_BUSES_FAILURE, 
+  GET_ALL_BUSES, 
+  GET_BUS_BY_ID 
+} from "../Types/Types";
 
 const initialState = {
   buses: [],
+  allBuses: [], 
+  bus: null, // New state for a single bus
   error: null,
   from: "",
   to: "",
   time: "",
   searchResultsView: [],
-  loading: false, // To handle loading state for the search
+  loading: false,
 };
 
 const busReducer = (state = initialState, action) => {
@@ -38,31 +50,41 @@ const busReducer = (state = initialState, action) => {
         error: action.payload,
       };
 
-    // Handle the request action (loading state)
     case SEARCH_BUSES_REQUEST:
       return {
         ...state,
-        loading: true, // Set loading to true when the search request is initiated
-        searchResults: [], // Clear previous search results
+        loading: true,
+        searchResultsView: [],
       };
 
-    // Handle the success action
     case SEARCH_BUSES_SUCCESS:
       return {
         ...state,
-        loading: false, // Set loading to false when the search is successful
-        searchResultsView: action.payload, // Set the search results in the state
-        from: action.payload.from, // If you want to track the search criteria
+        loading: false,
+        searchResultsView: action.payload,
+        from: action.payload.from,
         to: action.payload.to,
         time: action.payload.time,
       };
 
-    // Handle the failure action
     case SEARCH_BUSES_FAILURE:
       return {
         ...state,
-        loading: false, // Set loading to false if there's an error
-        error: action.payload, // Store the error message
+        loading: false,
+        error: action.payload,
+      };
+
+    case GET_ALL_BUSES:
+      return {
+        ...state,
+        allBuses: action.payload,
+      };
+
+    // ✅ New case for Get Bus By ID
+    case GET_BUS_BY_ID:
+      return {
+        ...state,
+        bus: action.payload, // Store the fetched bus in state
       };
 
     default:

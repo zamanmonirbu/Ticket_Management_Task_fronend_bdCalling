@@ -3,7 +3,6 @@ import { ticketPrices } from "../Dashboard/Data/cityData";
 
 
 const BusDetails = ({ selectedBus }) => {
-  console.log(selectedBus);
 
   return (
     <div className="bg-gray-100 p-4 rounded-xl max-w-5xl mx-auto">

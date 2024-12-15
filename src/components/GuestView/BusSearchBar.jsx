@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { toast, ToastContainer } from "react-toastify";  // Import Toastify
 import CitySelection from "./CitySelection";
 import DateTimeSelection from "./DateTimeSelection";
 import SearchButton from "./SearchButton";
 import SearchResults from "./SearchResults";
 import BusDetails from "./BusDetails";
 import BusSeatBooking from "./BusSeatBooking";
-import {  cities } from "../Dashboard/Data/cityData";
+import { cities } from "../Dashboard/Data/cityData";
 import { searchBuses } from "../../redux/Actions/busActions";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../utils/Loader";
@@ -20,8 +19,6 @@ const BusSearchBar = () => {
   const { from, to, time, searchResultsView = [], loading } = useSelector(
     (state) => state.bus
   );
-
-  // console.log(searchResultsView)
 
   // Local state for 'from', 'to', and 'time'
   const [fromCity, setFromCity] = useState(from);
@@ -42,21 +39,17 @@ const BusSearchBar = () => {
     setSelectedBus(city);
   };
 
-  
-
-  // Show success message when no buses are found
   useEffect(() => {
     // Only show toast if the search has been initiated and results are fetched
     if (hasSearched && searchResultsView.length === 0) {
-      toast.error("No Buses found!");
+      // Removed toast.error
     }
   }, [searchResultsView, hasSearched]);  // Trigger when searchResultsView or hasSearched changes
-
 
   return (
     <div>
       <motion.div
-        className="bg-white rounded-lg max-w-5xl mx-auto mt-12 mb-4"
+        className="bg-white rounded-lg max-w-5xl mx-auto  mb-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -118,9 +111,6 @@ const BusSearchBar = () => {
           <BusSeatBooking busDetails={selectedBus} />
         </motion.div>
       )}
-
-      {/* ToastContainer to show toasts */}
-      <ToastContainer />
     </div>
   );
 };

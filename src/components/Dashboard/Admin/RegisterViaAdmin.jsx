@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import { register } from "../../redux/Actions/AuthActions";
 import { motion } from "framer-motion";
+import { register } from "../../../redux/Actions/AuthActions";
 
-const Register = () => {
+const RegisterViaAdmin = () => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
 
@@ -13,22 +13,23 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
   const [mobile, setMobile] = useState(""); // New state for mobile number
+  const [role, setRole] = useState("user"); // New state for user role
 
   const handleRegister = (e) => {
     e.preventDefault();
-    if (!name || !email || !password || !address || !mobile) {
+    if (!name || !email || !password || !address || !mobile || !role) {
       toast.error("Please fill in all fields");
       return;
     }
 
-    console.log(name, email, password, address, mobile);
+    console.log(name, email, password, address, mobile, role);
 
-    dispatch(register(name, email, password, address, mobile)); // Include mobile in registration
+    dispatch(register(name, email, password, address, mobile, role)); // Include role in registration
   };
 
   useEffect(() => {
     if (error) {
-      console.log(error)
+      console.log(error);
       toast.error(error);
     }
   }, [error]); // Run only when `error` changes
@@ -81,6 +82,16 @@ const Register = () => {
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+          <div className="mb-4">
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
           <div className="mb-6">
             <input
               type="password"
@@ -112,4 +123,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterViaAdmin;

@@ -19,11 +19,12 @@ export const fetchBookedSeats = (busId) => async (dispatch) => {
 // https://ticket-management-task-fronend-bd-calling.vercel.app/
 
 // **Book a Seat Action**
-export const bookSeat = (userId, busId, seatNumber, total) => async (dispatch) => {
+export const bookSeat = (bookingData) => async (dispatch) => {
+  console.log(bookingData)
   dispatch({ type: BOOK_SEAT_REQUEST });
   try {
-     await axiosInstance.post('/user/book-seat', { userId, busId, seatNumber, total });
-    dispatch({ type: BOOK_SEAT_SUCCESS, payload: seatNumber }); // Seat booked successfully
+     await axiosInstance.post('/user/book-seat', bookingData);
+    dispatch({ type: BOOK_SEAT_SUCCESS, payload: 2 }); 
   } catch (error) {
     console.log(error)
     dispatch({ type: BOOK_SEAT_FAILURE, payload: error.message });

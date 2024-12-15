@@ -5,6 +5,7 @@ import ticketReducer from './Reducers/ticketReducer';
 import { purchaseTicketReducer, viewAvailableTicketsReducer, viewBusesReducer } from './Reducers/UserReducer';
 import { busSeatReducer } from './Reducers/busSeatReducer';
 import { busCartReducer } from './Reducers/busCartReducer';
+import userReducerViaAdmin from './Reducers/userReducerViaAdmin';
 
 
 const rootReducer = combineReducers({
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   purchaseTicket:purchaseTicketReducer,
   busSeats: busSeatReducer,
   busCart: busCartReducer,
+  userAdmin:userReducerViaAdmin,
 
 
 });

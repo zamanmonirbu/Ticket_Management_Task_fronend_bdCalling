@@ -13,6 +13,9 @@ const BusSeatBooking = ({ busDetails }) => {
   const { bookedSeats, loading } = useSelector((state) => state.busSeats);
   const { cart } = useSelector((state) => state.busCart);
 
+  // Extract seat numbers from the bookedSeats array (e.g., [5, 9, 1, 8, 7])
+  const bookedSeatNumbers = bookedSeats.map((seat) => seat.seatNumber);
+
   // Fetch booked seats when component mounts
   useEffect(() => {
     dispatch(fetchBookedSeats(busDetails._id));
@@ -31,7 +34,7 @@ const BusSeatBooking = ({ busDetails }) => {
 
   // Handle seat click
   const handleSeatClick = (seatNumber) => {
-    if (!seatNumber || bookedSeats.includes(seatNumber)) return;
+    if (!seatNumber || bookedSeatNumbers.includes(seatNumber)) return;
 
     const seatData = {
       seatNumber,
@@ -61,18 +64,19 @@ const BusSeatBooking = ({ busDetails }) => {
                   {seatNumber && (
                     <motion.button
                       onClick={() => handleSeatClick(seatNumber)}
-                      className={`w-12 h-12 rounded-lg flex items-center justify-center focus:outline-none transition-all ${
-                        bookedSeats.includes(seatNumber)
-                          ? 'bg-red-500 cursor-not-allowed'
-                          : cart.some(seat => seat.seatNumber === seatNumber)
-                          ? 'bg-yellow-500 hover:bg-yellow-600'
-                          : 'bg-green-500 hover:bg-green-600'
-                      }`}
-                      disabled={bookedSeats.includes(seatNumber)}
+                      className={`w-12 h-12 rounded-lg flex items-center justify-center focus:outline-none transition-all 
+                        ${
+                          bookedSeatNumbers.includes(seatNumber) // Check if the seat is booked
+                            ? 'bg-red-500 cursor-not-allowed' // Booked seat
+                            : cart.some(seat => seat.seatNumber === seatNumber) // Check if seat is in cart
+                            ? 'bg-yellow-500 hover:bg-yellow-600' // Carted seat
+                            : 'bg-green-500 hover:bg-green-600' // Available seat
+                        }`}
+                      disabled={bookedSeatNumbers.includes(seatNumber)} // Disable if booked
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      {bookedSeats.includes(seatNumber) ? (
+                      {bookedSeatNumbers.includes(seatNumber) ? (
                         <IoCheckmarkDoneCircleOutline className="text-white" />
                       ) : (
                         <MdOutlineAirlineSeatReclineExtra className="text-white" />
