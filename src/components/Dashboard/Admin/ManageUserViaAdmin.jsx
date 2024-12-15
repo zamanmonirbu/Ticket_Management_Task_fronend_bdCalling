@@ -4,9 +4,10 @@ import { createUser, fetchUsers, updateUserStatus, deleteUser } from '../../../r
 
 const ManageUserViaAdmin = () => {
   const dispatch = useDispatch();
-  const { users, creatingUser } = useSelector((state) => state.userAdmin);
+  const { users=[], creatingUser } = useSelector((state) => state.userAdmin);
 
-console.log("users",users)
+  console.log(users)
+
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -155,13 +156,13 @@ console.log("users",users)
         </div>
       </form>
 
-      { users.length>0&& (
+      { users?.length>0&& (
         <ul className="space-y-2 mt-4">
           {users.map((user) => (
-            <li key={user._id} className="p-4 border border-gray-200 rounded-md flex justify-between items-center">
+            <li key={user?._id} className="p-4 border border-gray-200 rounded-md flex justify-between items-center">
               <div>
-                <div className="font-semibold">{user.name}</div>
-                <div className="text-sm text-gray-500">{user.role}</div>
+                <div className="font-semibold">{user?.name}</div>
+                <div className="text-sm text-gray-500">{user?.role}</div>
               </div>
               <div className="space-x-2">
                 {/* <button
@@ -171,7 +172,7 @@ console.log("users",users)
                   {user.status === 'active' ? 'Deactivate' : 'Activate'}
                 </button> */}
                 <button
-                  onClick={() => handleDelete(user._id)}
+                  onClick={() => handleDelete(user?._id)}
                   className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
                 >
                   Delete

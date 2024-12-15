@@ -5,7 +5,7 @@ import ViewBuses from '../components/User/ViewBuses';
 import PrivateRoute from "../components/Dashboard/PrivateRoute";
 import Login from "../components/pages/Login";
 import AdminDashboard from "../components/Dashboard/AdminDashboard";
-import Dashboard from "../components/Dashboard/Dashboard";
+// import Dashboard from "../components/Dashboard/Dashboard";
 import UserPRofile from "../components/Dashboard/UserPRofile";
 // import ManageUser from "../components/Dashboard/ManageUser";
 import AdminPrivate from "../components/Dashboard/AdminPrivate";

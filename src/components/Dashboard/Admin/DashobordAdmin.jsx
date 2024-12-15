@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const DashboardAdmin = () => {
 
-const {tickets}=useSelector((state)=>state.ticket);
+const {tickets=[]}=useSelector((state)=>state.ticket);
 const totalTickets = tickets?.length || 0;
   const totalRevenue = tickets?.reduce((acc, ticket) => acc + ticket.total, 0) || 0;
   const totalBuses = new Set(tickets?.map((ticket) => ticket.busId)).size || 0;
